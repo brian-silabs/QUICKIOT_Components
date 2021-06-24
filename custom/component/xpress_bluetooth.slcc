@@ -1,0 +1,16 @@
+id: xpress_connectivity_bluetooth
+label: Xpress Bluetooth
+package: platform
+description: Component that provides temperature sensing over any protocol functionnality.
+category: Xpress|Connectivity
+quality: alpha
+root_path: app/common/xpress/connectivity/bluetooth
+
+provides:
+  - name: xpress_connectivity_bluetooth
+requires:
+  - name: gatt_configuration
+  - name: bluetooth_feature_gatt_server
+template_contribution:
+  - name: component_catalog
+    value: xpress_connectivity_bluetooth

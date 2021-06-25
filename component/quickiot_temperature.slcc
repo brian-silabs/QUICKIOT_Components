@@ -1,0 +1,18 @@
+id: quickiot_function_temperature
+label: Quickiot Function Temperature
+package: platform
+description: Component that provides temperature sensing over any protocol functionnality.
+category: Quickiot|Function
+quality: alpha
+root_path: app/common/quickiot/function/temperature
+
+provides:
+  - name: quickiot_function_temperature
+requires:
+  - name: sensor_rht
+  - name: gatt_service_rht
+    condition:
+      - quickiot_connectivity_bluetooth
+template_contribution:
+  - name: component_catalog
+    value: quickiot_function_temperature

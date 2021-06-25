@@ -1,0 +1,24 @@
+id: quickiot_connectivity_bluetooth
+label: Quick IoT Bluetooth Peripheral
+package: platform
+description: Component that provides Bluetooth Low Energy Peripheral functionnality
+category: Quickiot|Connectivity
+quality: alpha
+root_path: app/common/quickiot/connectivity/bluetooth
+
+provides:
+  - name: quickiot_connectivity_bluetooth
+requires:
+  - name: gatt_configuration
+  - name: bluetooth_feature_gatt_server
+  - name: bluetooth_feature_gatt
+  - name: bluetooth_feature_advertiser
+  - name: bluetooth_feature_connection
+  - name: bluetooth_feature_scanner
+  - name: bluetooth_feature_system
+  - name: bluetooth_feature_sm
+template_contribution:
+  - name: component_catalog
+    value: quickiot_connectivity_bluetooth
+ui_hints:
+  visibility: basic

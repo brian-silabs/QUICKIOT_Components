@@ -4,7 +4,15 @@ package: platform
 description: Component that provides Bluetooth Low Energy Peripheral functionnality
 category: Quickiot|Connectivity
 quality: alpha
-root_path: app/common/quickiot/connectivity/bluetooth
+root_path: ../../../repos/QUICKIOT_Components/
+
+source:
+  - path: quickiot/connectivity/bluetooth/qiot_adv_service.c
+
+include:
+  - path: .
+    file_list:
+      - path: quickiot/connectivity/bluetooth/qiot_adv_service.h
 
 provides:
   - name: quickiot_connectivity_bluetooth
@@ -17,7 +25,14 @@ requires:
   - name: bluetooth_feature_scanner
   - name: bluetooth_feature_system
   - name: bluetooth_feature_sm
+  - name: app_assert
+
 template_contribution:
+  - name: bluetooth_on_event
+    value:
+      include: qiot_adv_service.h
+      function: qiot_adv_service_on_event
+
   - name: component_catalog
     value: quickiot_connectivity_bluetooth
 ui_hints:

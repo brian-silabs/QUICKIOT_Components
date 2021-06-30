@@ -1,0 +1,10 @@
+id: quickiot
+version: "1.0.0"
+label: Quick IOT SDK Extension
+description: >
+  Simplified user interface for fast PoC development
+component_path:
+  - path: "./component"
+sdk:
+  id: "gecko_sdk"
+  version: "3.2.0"

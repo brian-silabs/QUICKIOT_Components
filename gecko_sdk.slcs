@@ -5,7 +5,7 @@ description: |-
 sdk_version: "3.2.0"
 specification_version: 0
 component_path:
-  - path: "custom/component"
+  - path: "app/QUICKIOT_Components/component"
   - path: "app/amazon/component"
   - path: "app/bluetooth/component"
   - path: "app/flex/component/common"

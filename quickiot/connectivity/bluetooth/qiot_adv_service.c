@@ -41,6 +41,8 @@ static uint8_t advertising_set_handle = 0xff;
 
 void qiot_adv_service_on_event(sl_bt_msg_t *evt)
 {
+  sl_status_t sc;
+
   // Handle stack events
   switch (SL_BT_MSG_ID(evt->header)) {
     // -------------------------------

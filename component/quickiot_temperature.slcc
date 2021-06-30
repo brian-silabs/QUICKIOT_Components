@@ -1,10 +1,10 @@
-id: quickiot_function_temperature
-label: Quickiot Function Temperature
+id: quickiot_functionnality_temperature
+label: Quickiot Functionnality Temperature
 package: platform
 description: Component that provides temperature sensing over any protocol functionnality.
-category: Quickiot|Function
+category: Quickiot|Functionnality
 quality: alpha
-root_path: app/common/quickiot/function/temperature
+root_path: app/common/quickiot/functionnality/temperature
 
 provides:
   - name: quickiot_function_temperature
@@ -20,7 +20,7 @@ recommends:
 
 template_contribution:
   - name: component_catalog
-    value: quickiot_function_temperature
+    value: quickiot_functionnality_temperature
 
 ui_hints:
   visibility: basic

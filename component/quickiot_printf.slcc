@@ -1,0 +1,25 @@
+id: quickiot_utility_printf
+label: Quickiot Printf
+package: platform
+description: Component that provides temperature sensing over any protocol functionnality.
+category: Quickiot|Utility
+quality: alpha
+root_path: app/common/quickiot/utility/printf
+
+provides:
+  - name: quickiot_utility_printf
+
+requires:
+  - name: printf
+  - name: iostream_transport
+
+recommends:
+  - id: "iostream_transport"
+    instance: ["vcom"]
+
+template_contribution:
+  - name: component_catalog
+    value: quickiot_utility_printf
+
+ui_hints:
+  visibility: basic

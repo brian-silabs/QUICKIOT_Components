@@ -4,7 +4,18 @@ package: platform
 description: Component that provides temperature sensing over any protocol functionnality.
 category: Quickiot|Functionnality
 quality: alpha
-root_path: app/common/quickiot/functionnality/temperature
+root_path: app/QUICKIOT_Components
+
+config_file:
+  - path: "quickiot/functionnality/temperature/config/qiot_temperature_service_config.h"
+
+source:
+  - path: quickiot/functionnality/temperature/qiot_temperature_service.c
+
+include:
+  - path: 
+    file_list:
+      - path: quickiot/functionnality/temperature/qiot_temperature_service.h
 
 provides:
   - name: quickiot_function_temperature
@@ -14,11 +25,17 @@ requires:
   - name: gatt_service_rht
     condition:
       - quickiot_connectivity_bluetooth
+  - name: "sleeptimer"
 
 recommends:
   - id: "sensor_rht"
 
 template_contribution:
+  - name: event_handler
+    value:
+      event: internal_app_init
+      include: quickiot/functionnality/temperature/qiot_temperature_service.h
+      handler: qiot_temperature_service_init
   - name: component_catalog
     value: quickiot_functionnality_temperature
 

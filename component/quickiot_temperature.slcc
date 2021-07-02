@@ -26,9 +26,12 @@ requires:
     condition:
       - quickiot_connectivity_bluetooth
   - name: "sleeptimer"
+  - name: i2cspm
 
 recommends:
   - id: "sensor_rht"
+  - id: "i2cspm"
+    instance: ["sensor"]
 
 template_contribution:
   - name: event_handler

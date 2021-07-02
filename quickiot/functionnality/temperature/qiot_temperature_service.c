@@ -31,6 +31,10 @@
 #include "qiot_temperature_service_config.h"
 #include "qiot_temperature_service.h"
 
+#include "sl_board_control_config.h"
+#include "sl_board_control.h"
+#include "em_gpio.h"
+
 #ifdef SL_COMPONENT_CATALOG_PRESENT
 #include "sl_component_catalog.h"
 #ifdef SL_CATALOG_PRINTF_PRESENT
@@ -49,7 +53,6 @@ static int32_t                          temperature_g;
 
 static void sampling_timer_callback(sl_sleeptimer_timer_handle_t *handle, void *data);
 
-
 // -----------------------------------------------------------------------------
 // Private function definitions
 
@@ -62,7 +65,7 @@ static void sampling_timer_callback(sl_sleeptimer_timer_handle_t *handle, void *
   sc = sl_sensor_rht_get(&relative_humidity_g, &temperature_g);
   if(sc != SL_STATUS_OK){
 #ifdef SL_CATALOG_PRINTF_PRESENT
-    printf("[QIOT_TEMP] sensor data get failed with code 0x%2lX\n", sc);
+    printf("[QIOT_TEMP] INFO : sensor data get failed with code 0x%2lX\n", sc);
 #endif //SL_CATALOG_PRINTF_PRESENT
   }
   qiot_temperature_event(relative_humidity_g, temperature_g);
@@ -79,9 +82,22 @@ void qiot_temperature_service_init( void )
 
   relative_humidity_g = 0;
   temperature_g = - 200;
-  sampling_timer_callback(NULL, NULL);//Call it once
+
+#ifndef SL_BOARD_ENABLE_SENSOR_RHT
 #ifdef SL_CATALOG_PRINTF_PRESENT
-  printf("[QIOT_TEMP] Sensor data initialized to Temp = %ld, RHumidity = %lu.\n", temperature_g, relative_humidity_g);
+  printf("[QIOT_TEMP] WARNING : No Sensor Enable Pin on this board, expect errors 0x31 on i2cspm");
+#endif //SL_CATALOG_PRINTF_PRESENT
+  #warning("[QIOT_TEMP] WARNING : No Sensor Enable Pin on this board, expect errors 0x31 on i2cspm");
+#else 
+#if (SL_BOARD_ENABLE_SENSOR_RHT == 0)
+  sc = sl_board_enable_sensor(SL_BOARD_SENSOR_RHT);
+  printf("[QIOT_TEMP] INFO : Enabling Environmental Sensor supply on behalf of board control : 0x%2lX \n", sc);
+#endif // (SL_BOARD_ENABLE_SENSOR_RHT == 0)
+#endif // SL_BOARD_ENABLE_SENSOR_RHT
+
+  sampling_timer_callback(NULL, NULL);//Call it once but might not be right moment in app boot
+#ifdef SL_CATALOG_PRINTF_PRESENT
+  printf("[QIOT_TEMP] DEBUG : Sensor data initialized to Temp = %ld, RHumidity = %lu.\n", temperature_g, relative_humidity_g);
 #endif //SL_CATALOG_PRINTF_PRESENT
 
   if (timer_timeout_ms > 0)
@@ -95,11 +111,11 @@ void qiot_temperature_service_init( void )
                                         0);
     if(sc != SL_STATUS_OK){
 #ifdef SL_CATALOG_PRINTF_PRESENT
-  printf("[QIOT_TEMP] Periodic timer init returned code 0x%2lX \n", sc);
+  printf("[QIOT_TEMP] DEBUG : Periodic timer init returned code 0x%2lX \n", sc);
 #endif //SL_CATALOG_PRINTF_PRESENT
     }
 #ifdef SL_CATALOG_PRINTF_PRESENT
-  printf("[QIOT_TEMP] Periodic sampling enabled. Period =  %lu ms\n", timer_timeout_ms);
+  printf("[QIOT_TEMP] DEBUG : Periodic sampling enabled. Period =  %lu ms\n", timer_timeout_ms);
 #endif //SL_CATALOG_PRINTF_PRESENT
   }
 }
@@ -117,7 +133,7 @@ void qiot_temperature_service_get_relative_humidity( uint32_t *rh )
 SL_WEAK void qiot_temperature_event(uint32_t rh, int32_t t)
 {
 #ifdef SL_CATALOG_PRINTF_PRESENT
-  printf("[QIOT_TEMP] Sensor data event, Temp = %ld, RHumidity = %lu.\n", t, rh);
+  printf("[QIOT_TEMP] DEBUG : Sensor data event, Temp = %ld, RHumidity = %lu.\n", t, rh);
 #else
   (void)(rh);
   (void)(t);
